@@ -94,7 +94,7 @@ def login():
     return et.tostring(e)
 
 
-@bp.post("/saved_session/")
+@bp.post("/saved-session/")
 @need_client_session
 def saved_session(session: ClientSession):
     e = et.Element(
@@ -115,4 +115,11 @@ def saved_session(session: ClientSession):
 @need_client_session
 def poll(session: ClientSession):
     session.poll()
-    return generic_response("poll", True)
+    return generic_response("poll")
+
+
+@bp.post("/disconnect/")
+@need_client_session
+def disconnect(session: ClientSession):
+    session.destroy()
+    return generic_response("disconnect")

@@ -1,0 +1,61 @@
+form {
+    .field-group {
+        &.required label.title::after {
+            content: "*";
+            font-size: 12px;
+            font-weight: bold;
+            vertical-align: top;
+            margin-left: 4px;
+            margin-bottom: -7px;
+            color: red;
+            display: inline-block;
+        }
+
+        input[type=text],
+        input[type=password],
+        input[type=email] {
+            width: 100%;
+        }
+
+        input, div.g-recaptcha {
+            margin: 6px 0;
+        }
+
+        label.title {
+            display: block;
+        }
+    }
+}
+
+form.page-form {
+    width: 65%;
+    padding: 1em;
+    margin: 0 auto;
+
+    > button[type=submit] {
+        width: 100%;
+    }
+
+    > small.footnote {
+        display: block;
+        color: var(--muted);
+        margin-top: 1.5rem;
+    }
+}
+
+input[type=password],
+input[type=text],
+input[type=email] {
+    padding: 8px 1em;
+    font-size: 14px;
+    border: 1px solid var(--outline);
+}
+
+button {
+    border: unset;
+    border-radius: 6px;
+    padding: 8px 14px;
+    background-color: var(--accent);
+    color: var(--on-accent);
+    font-size: 14px;
+}

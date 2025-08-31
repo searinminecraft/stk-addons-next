@@ -76,4 +76,4 @@ class InvalidSession(UserException):
     """Raised when a session isn't valid anymore"""
 
     def __init__(self):
-        super().__init__("Session invalidated. Please sign in again.")
+        super().__init__("Session not valid. Please sign in.")

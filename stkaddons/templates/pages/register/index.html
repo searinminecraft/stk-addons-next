@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+{% set title="Register" %}
+
+{% block head_additional %}
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{% endblock head_additional %}
+
+{% block body %}
+<main>
+    <h2>Register</h2>
+    <form action="/register" method="post" class="page-form">
+        {% set f = request.form %}
+
+        {% include "flash_message.html" %}
+
+        <div class="field-group required">
+            <label for="username" class="title">Username</label>
+            <input type="text" required id="username" name="username" maxlength="30" value="{{f['username']}}">
+        </div>
+        <div class="field-group required">
+            <label for="email" class="title">Email</label>
+            <input type="email" required id="email" name="email" value="{{f['email']}}">
+        </div>
+        <div class="field-group required">
+            <label for="pass" class="title">Password</label>
+            <input type="password" name="password" id="pass" required value="{{f['password']}}">
+        </div>
+        <div class="field-group required">
+            <label for="pass-conf" class="title">Confirm Password</label>
+            <input type="password" name="password_confirm" id="pass-conf" required value="{{f['password_confirm']}}">
+        </div>
+        <div class="field-group">
+            <label for="real" class="title">Display Name</label>
+            <input type="text" name="realname" id="real" value="{{f['realname']}}">
+        </div>
+        <div class="field-group required">
+            <label class="title">CAPTCHA</label>
+            <div class="g-recaptcha" data-sitekey="{{config['RECAPTCHA_SITE_KEY']}}"></div>
+        </div>
+
+        <button type="submit">Register</button>
+
+        <small class="footnote">
+            This website is protected by reCAPTCHA and the 
+            <a href="https://www.google.com/intl/en/policies/terms/"
+            rel="noopener noreferrer" target="_blank">Google Terms of Service</a>
+            and <a href="https://www.google.com/intl/en/policies/privacy/"
+            rel="noopener noreferrer" target="_blank">Privacy Policy</a> apply.
+        </small>
+    </form>
+</main>
+{% endblock body %}

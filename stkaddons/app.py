@@ -4,7 +4,7 @@ import logging
 import os
 
 from . import database as db_handler
-from .api import bp as api
+
 
 def create_app():
     app = Flask(__name__, instance_relative_config=True)
@@ -16,7 +16,7 @@ def create_app():
         DB_USER=None,
         DB_PASS=None,
         DB_PASSWORD=None,
-        VERSION="0.1 - Special Week"
+        VERSION="0.1 - Special Week",
     )
     app.config.from_pyfile("config.py", True)
     os.makedirs(app.instance_path, exist_ok=True)
@@ -30,10 +30,17 @@ def create_app():
 
     mail = Mail()
 
-
     mail.init_app(app)
     db_handler.init_app(app)
 
+    from .api import bp as api
+    from .resources import bp as resources
+    from .routes.index import bp as index
+    from .routes.register import bp as register
+
     app.register_blueprint(api)
+    app.register_blueprint(resources)
+    app.register_blueprint(index)
+    app.register_blueprint(register)
 
     return app

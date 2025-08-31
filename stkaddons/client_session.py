@@ -57,7 +57,7 @@ class ClientSession:
     @classmethod
     def get(cls, id: str, token: str) -> ClientSession:
         """Get a session"""
-        user = User.get_user(id)
+        user = User.get_user(id=id)
 
         if not user:
             raise UserNotFound
@@ -65,7 +65,7 @@ class ClientSession:
         db = get_database()
         cur = db.cursor()
 
-        cur.execute("SELECT token, last_login FROM sessions WHERE id = %s", (user.id,))
+        cur.execute("SELECT token FROM sessions WHERE id = %s", (user.id,))
         data = cur.fetchall()
 
         if not data:
@@ -86,4 +86,14 @@ class ClientSession:
             "UPDATE sessions SET last_activity = %s WHERE id = %s",
             (datetime.datetime.now(), self.user.id),
         )
+        db.commit()
+    
+
+    def destroy(self):
+        """Destroy the session, making the token invalid"""
+        db = get_database()
+        cur = db.cursor()
+
+        cur.execute("DELETE FROM sessions WHERE token = %s", (self.session_id,))
+
         db.commit()

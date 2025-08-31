@@ -25,7 +25,7 @@ if TYPE_CHECKING:
         cursor as Cursor,
     )
 
-USERNAME_RE = re.compile(r"^[a-z0-9\.\-\_]+$")
+USERNAME_RE = re.compile(r"^[a-zA-Z0-9\.\-\_]+$")
 PASSWORD_RE = re.compile(
     r"^[a-zA-Z0-9\!\@\#\$\%\^\&\*\(\)\_\+\=\-\/\\\{\}\~\>\<\'\;\[\]\,\.\"\|\`]+$"
 )
@@ -69,7 +69,7 @@ class User:
     @classmethod
     def get_user(cls, *, id: int = None, username: str = None) -> Optional[User]:
         print(id, username  )
-        if not (id or username):
+        if id is None and username is None:
             raise ValueError("Provide a username or ID")
 
         db = database.get_database()
@@ -79,6 +79,8 @@ class User:
             cur.execute("SELECT * FROM users WHERE id = %s", (int(id),))
         elif username:
             cur.execute("SELECT * FROM users WHERE username LIKE %s", (username,))
+        else:
+            raise ValueError("Provide a username or ID")
 
         res = cur.fetchone()
 

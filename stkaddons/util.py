@@ -22,8 +22,8 @@ def need_client_session(f):
 
     @wraps(f)
     def wrapped(**kwargs):
-        f = request.form
-        session = ClientSession.create(f["userid"], f["token"])
+        fr = request.form
+        session = ClientSession.get(fr["userid"], fr["token"])
 
         return f(session, **kwargs)
     

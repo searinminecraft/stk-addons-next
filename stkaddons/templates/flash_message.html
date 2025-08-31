@@ -1,0 +1,17 @@
+{% macro flashmsg(message, severity = "success") %}
+<div class="flash-message {{severity}}">
+    {{message}}
+</div>
+{% endmacro %}
+
+{% with msgs = get_flashed_messages(with_categories=True) %}
+
+{% if msgs %}
+<div class="flash-messages">
+    {% for cat, msg in msgs %}
+    {{ flashmsg(msg, cat) }}
+    {% endfor %}
+</div>
+{% endif %}
+
+{% endwith %}
