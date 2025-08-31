@@ -26,5 +26,5 @@ def need_client_session(f):
         session = ClientSession.get(fr["userid"], fr["token"])
 
         return f(session, **kwargs)
-    
+
     return wrapped

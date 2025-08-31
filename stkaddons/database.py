@@ -28,7 +28,7 @@ def get_database() -> Connection:
 
 
 def close_database(exc) -> None:
-    db: Optional[Connection] = g.pop('db', None)
+    db: Optional[Connection] = g.pop("db", None)
 
     if db is not None:
         db.close()

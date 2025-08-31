@@ -1,4 +1,12 @@
-from flask import Blueprint, abort, flash, request, current_app, redirect, render_template
+from flask import (
+    Blueprint,
+    abort,
+    flash,
+    request,
+    current_app,
+    redirect,
+    render_template,
+)
 import logging
 import requests
 
@@ -15,14 +23,16 @@ def main():
     if request.method == "POST":
         f = request.form
 
-        if not all([x in f for x in ("username", "password", "password_confirm", "email")]):
+        if not all(
+            [x in f for x in ("username", "password", "password_confirm", "email")]
+        ):
             flash("Invalid request", "error")
             return render_template("pages/register/index.html"), 400
-        
+
         if f["password"] != f["password_confirm"]:
             flash("Passwords do not match", "error")
             return render_template("pages/register/index.html"), 400
-        
+
         try:
             User.check_email(f["email"])
             User.check_username(f["username"])
@@ -49,26 +59,33 @@ def main():
                     f"&remoteip={request.remote_addr}"
                 ),
             )
-        
+
             json = r.json()
             if not json["success"]:
                 log.error("Failure verifying challenge: %s", json)
                 flash("Invalid reCAPTCHA response", "error")
                 return render_template("pages/register/index.html"), 400
         except Exception:
-            log.exception("Unable to connect to reCAPTCHA. Try again or contact the site administrator.")
+            log.exception(
+                "Unable to connect to reCAPTCHA. Try again or contact the site administrator."
+            )
             return render_template("pages/register/index.html"), 500
-        
+
         try:
-            user = User.register(f["username"], f["password"], f["email"], f["realname"])
+            user = User.register(
+                f["username"], f["password"], f["email"], f["realname"]
+            )
         except (UsernameTaken, EmailTaken) as e:
             flash(str(e), "error")
             return render_template("pages/register/index.html"), 400
         except Exception:
             log.exception("Failure creating user account %s", f["username"])
-            flash("Unable to create your user account. Try again later or contact the site administrator.", "error")
+            flash(
+                "Unable to create your user account. Try again later or contact the site administrator.",
+                "error",
+            )
             return render_template("pages/register/index.html"), 500
-        
+
         return render_template("pages/register/activation.html", email=f["email"])
     else:
         return render_template("pages/register/index.html")
@@ -79,7 +96,7 @@ def confirm_account():
     if not request.args.get("code"):
         log.error("User tried to go to confirm_account without code!")
         abort(400)
-    
+
     db = get_database()
     cur = db.cursor()
 
@@ -88,7 +105,7 @@ def confirm_account():
 
     if not data:
         abort(400)
-    
+
     id = data[0]
     user = User.get_user(id=id)
     user.activate_user()

@@ -3,6 +3,7 @@ class DatabaseError(Exception):
 
     pass
 
+
 class UserException(Exception):
     """Base class for user-related exceptions"""
 
@@ -21,11 +22,13 @@ class PasswordLengthError(UserException):
 
 class BadPassword(UserException):
     def __init__(self):
-        super().__init__((
-            "Passwords may only contain ASCII letters, numbers, or any "
-            "of the following characters: ! @ # $ % ^ & * \ / _ + = - { "
-            "} ~ > < \" ' ; [ ] , . | `"
-        ))
+        super().__init__(
+            (
+                "Passwords may only contain ASCII letters, numbers, or any "
+                "of the following characters: ! @ # $ % ^ & * \ / _ + = - { "
+                "} ~ > < \" ' ; [ ] , . | `"
+            )
+        )
 
 
 class InvalidEmail(UserException):

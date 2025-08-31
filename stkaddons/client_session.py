@@ -87,7 +87,6 @@ class ClientSession:
             (datetime.datetime.now(), self.user.id),
         )
         db.commit()
-    
 
     def destroy(self):
         """Destroy the session, making the token invalid"""

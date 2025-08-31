@@ -68,7 +68,7 @@ class User:
 
     @classmethod
     def get_user(cls, *, id: int = None, username: str = None) -> Optional[User]:
-        print(id, username  )
+        print(id, username)
         if id is None and username is None:
             raise ValueError("Provide a username or ID")
 
@@ -147,9 +147,7 @@ class User:
     def role(self) -> Role:
         db = database.get_database()
         with db.cursor() as cur:
-            cur.execute(
-                "SELECT * FROM roles WHERE id = %(id)s", {"id": self.id}
-            )
+            cur.execute("SELECT * FROM roles WHERE id = %(id)s", {"id": self.id})
             data = cur.fetchone()
             return Role(*data)
 
@@ -204,4 +202,3 @@ class User:
             raise DatabaseError(
                 "A database error occurred while trying to activate your account"
             ) from e
-

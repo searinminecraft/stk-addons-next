@@ -29,5 +29,7 @@ def set_appropriate_headers(r: Response):
 
 @bp.route("/version/", methods=("GET", "POST"))
 def version():
-    e = et.Element("api", {"success": "yes", "version": current_app.config["VERSION"], "info": ""})
+    e = et.Element(
+        "api", {"success": "yes", "version": current_app.config["VERSION"], "info": ""}
+    )
     return et.tostring(e)
